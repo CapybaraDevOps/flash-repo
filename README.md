@@ -1,26 +1,22 @@
-# Getting Started
+# Python/Flask application and a Mongo database
+
+### Getting Started
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
-## Prerequisites
-- Python 3.x
+#### Prerequisites
+- Install docker and docker-compose
 
-## Installation
+#### Installation
 1. **Clone the repository**
 2. **Navigate into the project directory**
-3. **Create a virtual environment:**
+3. **Start up the docker-compose**
   ```
-  python -m venv venv
+  docker compose up
   ```
-4. **Activate the virtual environment:**
-- **Windows:**
+4. **After the application starts, navigate to http://localhost:5050**
+
+5. **Stop and remove containers**
   ```
-  venv\Scripts\activate
+  docker compose down
   ```
-- **Unix or MacOS:**
-  ```
-  source venv/bin/activate
-  ```
-5. **Install dependencies:**
-  ```
-  pip install -r requirements.txt
-  ```
+
