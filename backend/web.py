@@ -137,5 +137,9 @@ def get_next_client_id():
 
 # Run web-server
 if __name__ == '__main__':
+<<<<<<< HEAD
     app.run(host='0.0.0.0', port=5050)
+=======
+   app.run(host='0.0.0.0', port=5050, debug=True)
+>>>>>>> f7c0d82 (Added .travis.yml)
 
