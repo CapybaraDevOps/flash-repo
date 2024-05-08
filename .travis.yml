@@ -7,17 +7,11 @@ env:
   DOCKER_COMPOSE_VERSION: 2.26.1
 
 before_install:
-  - sudo rm /usr/local/bin/docker-compose
-  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
-  - chmod +x docker-compose
-  - sudo mv docker-compose /usr/local/bin
+  - docker build -t olkabolkagoryashenko/flask-test -f ./backend/Dockerfile.dev ./backdend
 
-before_script:
-  - docker-compose up --build -d
-  - sleep 10
 
 script:
-  - docker-compose run flask python web.py test
+  - docker run -e CI=true olkabolkagoryashenko/flask-test python web.py test
 
 after_script:
   - docker-compose down
