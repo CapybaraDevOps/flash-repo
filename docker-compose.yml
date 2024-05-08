@@ -26,4 +26,4 @@ services:
     # port mapping
     ports:
       - "5050:5050"
-    command: python main.py
+    command: python web.py
