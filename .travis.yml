@@ -7,6 +7,9 @@ env:
   DOCKER_COMPOSE_VERSION: 2.26.1
 
 before_install:
+
+  - sudo pip install --upgrade pip
+
   - docker build -t olkabolkagoryashenko/flask-test -f ./backend/Dockerfile.dev ./backend
 
 
