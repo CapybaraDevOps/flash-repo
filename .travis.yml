@@ -9,6 +9,8 @@ env:
 before_install:
 
   - sudo pip install --upgrade pip
+  - sudo pip install flask
+  - sudo pip install pymongo
 
   - docker build -t olkabolkagoryashenko/flask-test -f ./backend/Dockerfile.dev ./backend
 
