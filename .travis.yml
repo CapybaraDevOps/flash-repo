@@ -7,7 +7,7 @@ env:
   DOCKER_COMPOSE_VERSION: 2.26.1
 
 before_install:
-  - docker build -t olkabolkagoryashenko/flask-test -f ./backend/Dockerfile.dev ./backdend
+  - docker build -t olkabolkagoryashenko/flask-test -f ./backend/Dockerfile.dev ./backend
 
 
 script:
