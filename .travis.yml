@@ -12,6 +12,3 @@ before_install:
 
 script:
   - docker run -e CI=true olkabolkagoryashenko/flask-test python web.py test
-
-after_script:
-  - docker-compose down
