@@ -5,8 +5,8 @@ import hashlib
 
 ############## Initialization ##############
 app = Flask(__name__)
-#client = MongoClient("mongodb:27017")
-client = MongoClient('localhost', 27017)
+client = MongoClient("mongodb:27017")
+#client = MongoClient('localhost', 27017)
 
 # Mongodb database
 db = client.flask_database
