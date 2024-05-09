@@ -21,5 +21,5 @@ Follow these instructions to get a copy of the project up and running on your lo
   ```
 6. **NGINX as a reverse-proxy (now works with self signed cert TODO):
   ```
-  http://localhost
+  https://localhost
   ```
