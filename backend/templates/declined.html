@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}"/>
+    <title>Declined</title>
+</head>
+<body>
+    <h1>You have declined to save your data.</h1>
+    <p>If you want to remove all your stored data press <b>Delete</b> button.</p>
+<p>Or if you want to change your choice press <b>Accept</b> button</p>
+<form method="post" action="{{ url_for('accept') }}"></form>
+    <button type="submit">Accept</button>
+</form>
+<hr>
+<form method="post">         
+    <button type="submit" action="{{ url_for('delete_hash') }}">Delete</button>
+</form>
+</body>
+</html>
