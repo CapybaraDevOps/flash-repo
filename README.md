@@ -1,6 +1,6 @@
 # Python/Flask application and a Mongo database
 
-### Getting Started
+## Getting Started
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
 
 #### Prerequisites
@@ -20,3 +20,17 @@ Follow these instructions to get a copy of the project up and running on your lo
   docker compose down
   ```
 
+## Swagger
+**Uses route /docs by default**
+
+Example URL
+```
+ http://localhost:5050/docs
+```
+**You can use Swagger UI to test your endpoints**
+
+Swagger OpenAPI file location
+```
+~/backend/static/swagger.json
+```
+**Modify this file if you do some changes in any declared endpoints**
