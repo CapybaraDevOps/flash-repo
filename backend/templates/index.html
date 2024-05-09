@@ -9,17 +9,27 @@
 <body>
     <div class="content">
         <form method="POST">
-            {% if not client_data %}
-            <h1>Do you allow us to save your data?</h1>
-            <p><button type="yes" name="action" value="yes">Yes</button></p>
-            <p><button type="no" name="action" value="no">No</button></p>
-            
+            <!-- If client data present -->
+            {% if client_data %}
+                <!-- If current status is accepted -->
+                {% if client_data['status'] == 'accepted' %}
+                    <h1>Your record is already exist:</h1>
+                    <b>{{ client_data }}</b>
+                    <p>Your can update your data or delete record</p>
+                    <p><button type="update" name="action" value="update">Update</button></p>
+                    <p><button type="delete" name="action" value="delete">Delete</button></p>
+                {% endif %}
+                <!-- If current status is declined -->
+                {% if client_data['status'] == 'declined' %}
+                    <h1>Hello! You have chosen not to save your data.</h1>
+                    <p>You can delete all your data from our records or update your data.</p>
+                    <p><button type="manage_data" name="action" value="manage_data">Manage Data</button></p>
+                {% endif %}
+            <!-- If client data absent -->
             {% else %}
-            <p>Your record is already exist: <b>{{ client_data }}</b></p>
-            <p>Your can update your data or delete record </p>
-            <p><button type="update" name="action" value="update">Update</button></p>
-            <p><button type="delete" name="action" value="delete">Delete</button></p>
-            
+                <h1>Do you allow us to save your data?</h1>
+                <p><button type="yes" name="action" value="yes">Yes</button></p>
+                <p><button type="no" name="action" value="no">No</button></p>
             {% endif %}
         </form>
     </div>

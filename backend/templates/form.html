@@ -17,21 +17,13 @@
                 <input type="text" name="data" placeholder="Enter some data">
                 <button type="submit" name="action" value="submit">Submit</button>
             </p>
-            <!-- <p>
-                {% if client_data %}
-                    <p>Your record is already exist: <b>{{ client_data }}</b></p>
-                    <p>Your can update your data or delete record </p>
-                    <button type="update" name="action" value="update">Update</button>
-                    <button type="delete" name="action" value="delete">Delete</button>
-                {% endif %}
-            </p> -->
         </form>
     </div>
     <!-- Fetching a clients document -->
     {% for client in clients %}
     <div class="client">
         <p> 
-            <b>ID:</b> <i>{{ client['client_id'] }}</i>
+            <b>ID:</b> <i>{{ client['_id'] }}</i>
             <b>STATUS:</b> <i>{{ client['status'] }}</i>
             {% if client['ip'] %}
                 <b>IP:</b> <i>{{ client['ip'] }}</i>

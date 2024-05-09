@@ -5,8 +5,8 @@ import hashlib
 
 ############## Initialization ##############
 app = Flask(__name__)
-client = MongoClient("mongodb:27017")
-#client = MongoClient('localhost', 27017)
+#client = MongoClient("mongodb:27017")
+client = MongoClient('localhost', 27017)
 
 # Mongodb database
 db = client.flask_database
@@ -30,17 +30,19 @@ def index():
     ip_hash = get_hash(client_ip)
     # Check if Client data exist
     client_data = ip_hash_exists(ip_hash)
-    
+    # client_data = clients.({'ip_hash': ip_hash})
     if request.method == 'POST':
         action = request.form.get('action')
         database_create(client_ip, action, ip_hash)
         if action == "yes":
             return redirect(url_for('form'))
-        if action == "no":
+        elif action == "no":
             return redirect(url_for('declined'))
-        if action == "update":
+        elif action == "manage_data":
+            return redirect(url_for('declined'))
+        elif action == "update":
             return redirect(url_for('form'))
-        if action == "delete":
+        elif action == "delete":
             clients.delete_one({"ip_hash": ip_hash})
             return redirect(url_for('index'))
     return render_template('index.html', client_data=client_data)
@@ -74,25 +76,23 @@ def declined():
                 return redirect(url_for('form'))
     return render_template('declined.html')
 
-# Get IP Hash
-def get_hash(client_ip):
-    # Hashing IP addr
-    return hashlib.sha256(client_ip.encode()).hexdigest()
+# Delete record
+@app.post("/<id>/delete/")
+def delete(id):
+    clients.delete_one({"_id":ObjectId(id)})
+    return redirect(url_for('index'))
 
 # Func to create record in database
 def database_create(client_ip, action, ip_hash):
     # Get a value for client_id
-    client_id = get_next_client_id()
     if action == 'yes':
         clients.insert_one({
-            'client_id': client_id,
             'ip': client_ip, 
             'status': "accepted",
             'ip_hash': ip_hash 
             })
     elif action == 'no':
         clients.insert_one({
-            'client_id': client_id,
             'status': "declined",
             'ip_hash': ip_hash 
             })
@@ -114,28 +114,17 @@ def database_update(ip_hash, client_ip=None, data=None, action=None):
             upsert=False  # Set to True if you want to create a new document when no document matches the query
         )
 
+# Get IP Hash
+def get_hash(client_ip):
+    # Hashing IP addr
+    return hashlib.sha256(client_ip.encode()).hexdigest()
+
 def ip_hash_exists(ip_hash):
     # Check if the client data already exist and return it
     client_data = clients.find_one({'ip_hash': ip_hash})
     return client_data
 
-# Delete record
-@app.post("/<id>/delete/")
-def delete(id):
-    clients.delete_one({"_id":ObjectId(id)})
-    return redirect(url_for('index'))
-
-# Create counter collection for set unique client ID
-def get_next_client_id():
-    result = db.counters.find_one_and_update(
-        {'_id': 'client_id'},
-        {'$inc': {'seq': 1}},
-        upsert=True,
-        return_document=ReturnDocument.AFTER
-    )
-    return result['seq']
-
 # Run web-server
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5050)
+    app.run(host='0.0.0.0', port=5050, debug=True)
 
