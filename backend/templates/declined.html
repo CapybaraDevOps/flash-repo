@@ -8,14 +8,13 @@
 </head>
 <body>
     <h1>You have declined to save your data.</h1>
-    <p>If you want to remove all your stored data press <b>Delete</b> button.</p>
-<p>Or if you want to change your choice press <b>Accept</b> button</p>
-<form method="post" action="{{ url_for('accept') }}"></form>
-    <button type="submit">Accept</button>
-</form>
-<hr>
-<form method="post">         
-    <button type="submit" action="{{ url_for('delete_hash') }}">Delete</button>
-</form>
+        <div class="content">
+            <form method="POST">
+                <p>If you want to remove all your stored data press <b>Delete</b> button.</p>
+                <p>Or if you want to change your choice press <b>Accept</b> button</p>
+                <p><button type="delete" name="action" value="delete">Delete</button></p>
+                <p><button type="accept" name="action" value="accept">Accept</button></p>
+            </form>
+    </div>
 </body>
 </html>

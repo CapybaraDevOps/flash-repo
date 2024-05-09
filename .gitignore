@@ -1,4 +1,4 @@
 # Ignore enviroment folder
-venv/
+*venv/
 
 data

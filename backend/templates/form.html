@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MongDB Flask App</title>
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}"/>
+    <!-- <link rel="stylesheet" href="static/style.css"/> -->
 </head>
 <body>
     <h1>MongoDB Flask App</h1>
@@ -12,19 +13,32 @@
         <p><b>Your IP is: {{ client_ip }}</b></p>
         <form method="POST">
             <p>
-                <b><label for="data">Please write some data</label></b>
+                <label for="data"><b>Please write some data</b></label>
                 <input type="text" name="data" placeholder="Enter some data">
-                <button type="submit">Submit</button>
-            </p>   
+                <button type="submit" name="action" value="submit">Submit</button>
+            </p>
+            <!-- <p>
+                {% if client_data %}
+                    <p>Your record is already exist: <b>{{ client_data }}</b></p>
+                    <p>Your can update your data or delete record </p>
+                    <button type="update" name="action" value="update">Update</button>
+                    <button type="delete" name="action" value="delete">Delete</button>
+                {% endif %}
+            </p> -->
         </form>
     </div>
     <!-- Fetching a clients document -->
     {% for client in clients %}
     <div class="client">
         <p> 
-            <b>ID:</b> <i>{{ client['_id'] }}</i>
-            <b>IP:</b> <i>{{ client['ip'] }}</i>
-            <b>DATA:</b> <i>{{ client['data'] }}</i>
+            <b>ID:</b> <i>{{ client['client_id'] }}</i>
+            <b>STATUS:</b> <i>{{ client['status'] }}</i>
+            {% if client['ip'] %}
+                <b>IP:</b> <i>{{ client['ip'] }}</i>
+            {% endif %}
+            {% if client['data'] %}
+                <b>DATA:</b> <i>{{ client['data'] }}</i>
+            {% endif %}
         </p>
         <!-- Delete a client document form the collection -->
         <form method="POST"
@@ -36,5 +50,6 @@
         </form>
     </div>
     {% endfor %}
+</div>
 </body>
 </html>
