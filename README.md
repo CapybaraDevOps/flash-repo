@@ -19,7 +19,12 @@ Follow these instructions to get a copy of the project up and running on your lo
   ```
   docker compose down
   ```
-
+  
+6. **NGINX as a reverse-proxy (now works with self signed cert TODO):
+  ```
+  https://localhost
+  ```
+  
 ## Swagger
 **Uses route /docs by default**
 
