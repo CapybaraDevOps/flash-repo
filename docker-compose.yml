@@ -13,17 +13,21 @@ services:
     ports:
       - 80:80
       - 443:443
+    networks:
+      - frontnet
     depends_on:
       - flask
 
   mongodb:
     image: 'mongo:latest'
     container_name: mongodb
-    ports:
-     - 27017:27017
+    expose:
+     - 27017
+    networks:
+      - backnet
     #mount volume to our file system
     volumes:
-      - ./data/db:/data/db
+      - ./../data:/data/db
 
 
   
@@ -41,6 +45,15 @@ services:
     depends_on:
       -  mongodb
     # port mapping
-    ports:
-      - "5050:5050"
+    networks:
+      - backnet
+      - frontnet
+    expose:
+      - 5050
     command: python web.py
+  
+networks:
+    backnet:
+    frontnet:
+volumes:
+   data:
