@@ -7,10 +7,11 @@
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}"/>
 </head>
 <body>
-    <h1>Do you allow us to save your IP adress?</h1>
+    <h1>Do you allow us to save your data?</h1>
     <div class="content">
         <a href="/form"><button>Yes</button></a>
-        <a href="/form"><button>No</button></a>
+
+        <form method="post"><button type="submit">No</button></form>
     </div>
 </body>
 </html>
