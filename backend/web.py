@@ -4,6 +4,7 @@ from bson.objectid import ObjectId
 from flask_swagger_ui import get_swaggerui_blueprint
 import hashlib
 from werkzeug.middleware.proxy_fix import ProxyFix
+import redis
 
 ############## Initialization ##############
 app = Flask(__name__)
