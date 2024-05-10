@@ -29,6 +29,8 @@ app.register_blueprint(swaggerui_blueprint)
 db = client.flask_database
 # Collection
 clients = db.clients
+# Initialize Redis client
+redis_client = redis.Redis(host='redis', port=6379, charset="utf-8", decode_responses=True, db=0)
 
 ######## Collection columns ########
 # _id
@@ -60,6 +62,7 @@ def index():
             return redirect(url_for('form'))
         if action == "delete":
             clients.delete_one({"ip_hash": ip_hash})
+            redis_client.delete(ip_hash)
             return redirect(url_for('index'))
     return render_template('index.html', client_data=client_data)
 
@@ -73,6 +76,7 @@ def form():
     if request.method == 'POST':
         data = request.form.get('data')
         database_update(ip_hash=ip_hash, data=data)
+        redis_client.delete(ip_hash)
         return redirect(url_for('index'))
     all_data = clients.find()
     return render_template('form.html', client_ip=client_ip, clients=all_data, client_data=client_data)
@@ -134,7 +138,15 @@ def database_update(ip_hash, client_ip=None, data=None, action=None):
 
 def ip_hash_exists(ip_hash):
     # Check if the client data already exist and return it
+    cached_response = redis_client.hgetall(ip_hash)
+    if cached_response:
+        return cached_response
     client_data = clients.find_one({'ip_hash': ip_hash})
+    # Save client data to Redis cache
+    if client_data:
+       client_data['_id'] = str(client_data['_id'])
+       redis_client.hmset(ip_hash, client_data)
+       redis_client.expire(ip_hash, 30)
     return client_data
 
 # Delete record
