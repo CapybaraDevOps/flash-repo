@@ -3,6 +3,7 @@ from pymongo import MongoClient, ReturnDocument
 from bson.objectid import ObjectId
 from flask_swagger_ui import get_swaggerui_blueprint
 import hashlib
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 ############## Initialization ##############
 app = Flask(__name__)
@@ -153,5 +154,8 @@ def get_next_client_id():
 
 # Run web-server
 if __name__ == '__main__':
+    app.wsgi_app = ProxyFix(
+       app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+    )
     app.run(host='0.0.0.0', port=5050)
 
