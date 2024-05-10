@@ -1,12 +1,27 @@
 from flask import Flask, render_template, url_for, request, redirect
 from pymongo import MongoClient, ReturnDocument
 from bson.objectid import ObjectId
+from flask_swagger_ui import get_swaggerui_blueprint
 import hashlib
 
 ############## Initialization ##############
 app = Flask(__name__)
 client = MongoClient("mongodb:27017")
 #client = MongoClient('localhost', 27017)
+
+############## Swagger ##############
+SWAGGER_URL = '/docs'  # URL route for Swagger UI
+API_URL = '/static/swagger.json'  # Our API url (local resource)
+
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,  # Swagger UI static files will be mapped to '{SWAGGER_URL}/dist/'
+    API_URL,
+    config={  # Swagger UI config overrides
+        'app_name': "MongoDB Flask App"
+    },
+)
+app.register_blueprint(swaggerui_blueprint)
+
 
 # Mongodb database
 db = client.flask_database
@@ -25,6 +40,7 @@ clients = db.clients
 
 @app.route("/", methods=['GET', 'POST'])
 def index():
+
     # Get client's IP addr
     client_ip = request.remote_addr
     ip_hash = get_hash(client_ip)
