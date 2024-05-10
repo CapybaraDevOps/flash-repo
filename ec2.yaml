@@ -32,14 +32,18 @@ Resources:
                   - "secretsmanager:UntagResource"
                   - "secretsmanager:PutResourcePolicy"
                 Resource: "*"
+  MyInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref EC2SecretManager
   MyInstance:
     Type: AWS::EC2::Instance
     Properties:
       AvailabilityZone: us-east-1a
       ImageId: ami-0b5eea76982371e91
       InstanceType: t2.micro
-      Roles:
-        - !Ref EC2SecretManager
+      IamInstanceProfile: !Ref MyInstanceProfile
 
       SecurityGroups:
         - !Ref SSHSecurityGroup
@@ -72,13 +76,17 @@ Resources:
 
           # Clone and run a sample application
           cd /home/ec2-user
-          git clone -b jira-26-host-application-on-aws--use-aws-s3-for-photo-storage- https://github.com/CapybaraDevOps/flask-repo.git 
+          git clone https://github.com/CapybaraDevOps/flask-repo.git -b jira-26-host-application-on-aws--use-aws-s3-for-photo-storage-
           cd flask-repo
-          docker-compose --file docker-compose.yml up -d
+          docker-compose --file docker-compose.yml up
+          chmod +x aws_cert.py
+          chmod +x aws_key.py
           python3 aws_cert.py
           python3 aws_key.py
           docker-compose --file docker-compose.yml build
-          docker-compose --file docker-compose.yml up -d
+          docker-compose --file docker-compose.yml up
+        
+
 
 
       
@@ -106,10 +114,6 @@ Resources:
       GroupDescription: Enable standard web access
       SecurityGroupIngress:
         - CidrIp: "0.0.0.0/0"
-          FromPort: 5050
-          ToPort: 5050
-          IpProtocol: tcp
-        - idrIp: "0.0.0.0/0"
           FromPort: 80
           ToPort: 80
           IpProtocol: tcp
