@@ -13,6 +13,10 @@ Follow these instructions to get a copy of the project up and running on your lo
   ```
   docker compose up
   ```
+**To rebuild container:**
+  ```
+  docker-compose up -d --build
+  ```
 4. **After the application starts, navigate to http://localhost:5050**
 
 5. **Stop and remove containers**
@@ -20,7 +24,7 @@ Follow these instructions to get a copy of the project up and running on your lo
   docker compose down
   ```
   
-6. **NGINX as a reverse-proxy (now works with self signed cert TODO):
+6. **NGINX as a reverse-proxy (now works with self signed cert):**
   ```
   https://localhost
   ```
