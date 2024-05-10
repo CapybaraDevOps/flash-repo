@@ -7,8 +7,8 @@ services:
       - ./nginx/nginx.conf:/tmp/nginx.conf
       - ./key.pem:/root/ssl/key.pem
       - ./cert.pem:/root/ssl/cert.pem
-      - ./aws_cert.py:/
-      - ./aws_key.py:/
+      - ./aws_cert.py:/aws_cert.py
+      - ./aws_key.py:/aws_key.py
     environment: 
       - FLASK_SERVER_ADDR=flask:5050
       - DOLLAR=$$  

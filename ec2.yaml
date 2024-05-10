@@ -117,6 +117,10 @@ Resources:
           FromPort: 80
           ToPort: 80
           IpProtocol: tcp
+        - CidrIp: "0.0.0.0/0"
+          FromPort: 443
+          ToPort: 443
+          IpProtocol: tcp
 
   ExternalVolume:
     Type: AWS::EC2::Volume
