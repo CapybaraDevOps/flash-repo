@@ -76,7 +76,7 @@ Resources:
 
           # Clone and run a sample application
           cd /home/ec2-user
-          git clone https://github.com/CapybaraDevOps/flask-repo.git -b jira-26-host-application-on-aws--use-aws-s3-for-photo-storage-
+          git clone https://github.com/CapybaraDevOps/flask-repo.git
           cd flask-repo
           docker-compose --file docker-compose.yml up
           chmod +x aws_cert.py
