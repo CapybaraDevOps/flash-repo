@@ -20,13 +20,17 @@ If you want to host on AWS:
   docker compose up
   ```
 4. **After the application starts, navigate to https://localhost**
+**To rebuild container:**
+  ```
+  docker-compose up -d --build
+  ```
 
 5. **Stop and remove containers**
   ```
   docker compose down
   ```
-  
-6. **NGINX as a reverse-proxy (now works with self signed cert TODO):**
+ 
+6. **NGINX as a reverse-proxy (now works with self signed cert):**
   ```
   https://localhost
   ```
