@@ -31,7 +31,7 @@ def get_secret():
     secret = get_secret_value_response['SecretString']
 
     # Your code goes here.
-    f = open("./cert.pem", "w")
+    f = open("/etc/letsencrypt/fullchain.pem", "w")
     f.write(secret)
     f.close()
 get_secret()
