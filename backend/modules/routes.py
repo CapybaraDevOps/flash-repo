@@ -1,6 +1,6 @@
 from flask import Flask
 from web import app
-from modules.user import User
+from modules.user import User, UserAdmin
 from modules.client import Client
 
 ############ Users Route ############
@@ -16,6 +16,14 @@ def sign_out():
 @app.route('/user/login', methods=['POST'])
 def log_in():
   return User().login()
+
+@app.route('/user/admin/delete/<id>')
+def admin_delete_record(id):
+  return UserAdmin().delete_record(id)
+
+@app.route('/user/admin/delete_all')
+def admin_delete_record_all():
+  return UserAdmin().delete_record_all()
 
 ############ Clients Route ############
 
