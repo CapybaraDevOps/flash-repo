@@ -61,7 +61,6 @@ services:
       - frontnet
     expose:
       - 5050
-    command: python web.py
     env_file: .env
   
 networks:

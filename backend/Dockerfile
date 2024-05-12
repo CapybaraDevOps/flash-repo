@@ -9,3 +9,5 @@ RUN pip3 install --upgrade pip -r requirements.txt
 # copy the directory with Dockerfile, 
 # into working directory
 COPY . /backend
+
+CMD ["flask", "run"]
