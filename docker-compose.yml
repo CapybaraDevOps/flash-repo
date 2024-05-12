@@ -36,7 +36,8 @@ services:
       - backnet
     #mount volume to our file system
     volumes:
-      - ./data/db/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js
+      - ./data:/data/db
+      - ./backend/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
     env_file: [.env-mongo, .env]
 
 
