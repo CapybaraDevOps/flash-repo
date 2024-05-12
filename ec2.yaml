@@ -79,10 +79,10 @@ Resources:
           git clone https://github.com/CapybaraDevOps/flask-repo.git
           cd flask-repo
           docker-compose --file docker-compose.yml up
-          chmod +x aws_cert.py
-          chmod +x aws_key.py
-          python3 aws_cert.py
-          python3 aws_key.py
+          chmod +x get_cert.py
+          chmod +x cred.py
+          python3 get_cert.py
+          python3 cred.py
           docker-compose --file docker-compose.yml down
           docker-compose --file docker-compose.yml build
           docker-compose --file docker-compose.yml up
