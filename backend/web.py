@@ -2,13 +2,25 @@ from flask import Flask, render_template, url_for, request, redirect
 from pymongo import MongoClient, ReturnDocument
 from bson.objectid import ObjectId
 from flask_swagger_ui import get_swaggerui_blueprint
-import hashlib
 from werkzeug.middleware.proxy_fix import ProxyFix
+import hashlib
+import os
 
 ############## Initialization ##############
 app = Flask(__name__)
-client = MongoClient("mongodb:27017")
-#client = MongoClient('localhost', 27017)
+
+#Map variables
+for variable, value in os.environ.items():
+    if variable.startswith("MONGO_"):
+        env_name = variable.split("MONGO_")[1]
+        app.config[env_name] = value
+        print(env_name)
+
+#Old fall-back for AWS without auth
+#client = MongoClient("mongodb:27017")
+
+#Connect to Mongo
+client = MongoClient('mongodb', username=app.config['USER'], password=app.config['PASSWORD'], authSource='flask_database', authMechanism='SCRAM-SHA-256')
 
 ############## Swagger ##############
 SWAGGER_URL = '/docs'  # URL route for Swagger UI

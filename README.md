@@ -15,22 +15,38 @@ If you want to host on AWS:
 #### Installation locally 
 1. **Clone the repository**
 2. **Navigate into the project directory**
-3. **Start up the docker-compose**
+3. **Create .env and .env-mongo files for MongoDb authentication**
+
+  ##### **.env example**
+  ```
+  MONGO_USER=flask_user
+  MONGO_PASSWORD=flask_password
+  MONGO_DB=flask_database
+  ```
+
+  ##### .env-mongo example
+  ```
+  MONGO_INITDB_ROOT_USERNAME=rootUsername
+  MONGO_INITDB_ROOT_PASSWORD=rootPassword
+  MONGO_INITDB_DATABASE=admin
+  ```
+4. **Start up the docker-compose**
   ```
   docker compose up
   ```
-4. **After the application starts, navigate to https://localhost**
+5. **After the application starts, navigate to https://localhost**
+
 **To rebuild container:**
   ```
   docker-compose up -d --build
   ```
 
-5. **Stop and remove containers**
+6. **Stop and remove containers**
   ```
   docker compose down
   ```
  
-6. **NGINX as a reverse-proxy (now works with self signed cert):**
+7. **NGINX as a reverse-proxy (now works with self signed cert):**
   ```
   https://localhost
   ```
@@ -41,7 +57,7 @@ If you want to host on AWS:
 3. **Start up the docker-compose to generate your certificates**
    docker-compose -f docker-compose-cert.yml up --build
 4. **Navigate to the folder with your certificates, copy them, and paste them into AWS Secret Manager**
-   /etc/letsencrypt/live/cappybara.pp.ua - path to your secrets
+   /etc/letsencrypt/live/<domain> - path to your secrets
    
    Set secret names as follows:
    
@@ -60,14 +76,14 @@ If you want to host on AWS:
    docker-compose --file docker-compose.yml up
 
 8. **Please note you should update DNS name with your new IP address**
-9. **Your App is available with domain https://capybara.pp.ua/** 
+9. **Your App is now available with chosen domain name** 
   
 ## Swagger
 **Uses route /docs by default**
 
 Example URL
 ```
- http://localhost:5050/docs
+ http://localhost/docs
 ```
 **You can use Swagger UI to test your endpoints**
 
