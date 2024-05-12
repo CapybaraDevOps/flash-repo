@@ -5,8 +5,6 @@ services:
     image: nginx
     volumes:
       - ./nginx/nginx.conf:/tmp/nginx.conf
-     # - ./key.pem:/root/ssl/key.pem
-     # - ./cert.pem:/root/ssl/cert.pem
       - ./aws_cert.py:/aws_cert.py
       - ./aws_key.py:/aws_key.py
       - ./test_cert:/etc/letsencrypt:ro
