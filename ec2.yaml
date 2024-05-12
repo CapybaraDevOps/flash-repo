@@ -5,12 +5,45 @@ Parameters:
     Type: String
 
 Resources:
+  EC2SecretManager:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: MySecretsManagerPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - "secretsmanager:GetSecretValue"
+                  - "secretsmanager:DescribeSecret"
+                  - "secretsmanager:ListSecrets"
+                  - "secretsmanager:CreateSecret"
+                  - "secretsmanager:UpdateSecret"
+                  - "secretsmanager:DeleteSecret"
+                  - "secretsmanager:TagResource"
+                  - "secretsmanager:UntagResource"
+                  - "secretsmanager:PutResourcePolicy"
+                Resource: "*"
+  MyInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref EC2SecretManager
   MyInstance:
     Type: AWS::EC2::Instance
     Properties:
       AvailabilityZone: us-east-1a
       ImageId: ami-0b5eea76982371e91
       InstanceType: t2.micro
+      IamInstanceProfile: !Ref MyInstanceProfile
 
       SecurityGroups:
         - !Ref SSHSecurityGroup
@@ -39,12 +72,24 @@ Resources:
 
           # Install git in your EC2 instance
           yum install git -y
+          pip3 install boto3
 
           # Clone and run a sample application
           cd /home/ec2-user
           git clone https://github.com/CapybaraDevOps/flask-repo.git
           cd flask-repo
           docker-compose --file docker-compose.yml up
+          chmod +x aws_cert.py
+          chmod +x aws_key.py
+          python3 aws_cert.py
+          python3 aws_key.py
+          docker-compose --file docker-compose.yml down
+          docker-compose --file docker-compose.yml build
+          docker-compose --file docker-compose.yml up
+        
+
+
+
       
       
   # an elastic IP for our instance
@@ -70,8 +115,12 @@ Resources:
       GroupDescription: Enable standard web access
       SecurityGroupIngress:
         - CidrIp: "0.0.0.0/0"
-          FromPort: 5050
-          ToPort: 5050
+          FromPort: 80
+          ToPort: 80
+          IpProtocol: tcp
+        - CidrIp: "0.0.0.0/0"
+          FromPort: 443
+          ToPort: 443
           IpProtocol: tcp
 
   ExternalVolume:
