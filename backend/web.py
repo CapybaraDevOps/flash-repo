@@ -1,6 +1,5 @@
 from flask import Flask, render_template, session, redirect, request
-from pymongo import MongoClient, ReturnDocument
-from bson.objectid import ObjectId
+from pymongo import MongoClient
 from flask_swagger_ui import get_swaggerui_blueprint
 from werkzeug.middleware.proxy_fix import ProxyFix
 from functools import wraps
