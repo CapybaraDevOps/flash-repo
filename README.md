@@ -53,25 +53,32 @@ If you want to host on AWS:
 #### Installation on EC2 AWS
 
 1. **Stored your MongoDB credentials on AWS Secret Manager**
+
    Set secret names as follows:
+
    .env (for Flask App)
+
    .env-mongo (root user for MongoDB)
     
-2. **Build EC2 with CloudFormation using e2.yaml file**
-3. **Connect to EC2 and navigate into the project directory**
-4. **Start up the docker-compose to generate your certificates**
+3. **Build EC2 with CloudFormation using e2.yaml file**
+4. **Connect to EC2 and navigate into the project directory**
+5. **Start up the docker-compose to generate your certificates**
+
    docker-compose -f docker-compose-cert.yml up --build
-5. **Navigate to the folder with your certificates, copy them, and paste them into AWS Secret Manager**
-   /etc/letsencrypt/live/<domain> - path to your secrets
+7. **Navigate to the folder with your certificates, copy them, and paste them into AWS Secret Manager**
+
+    /etc/letsencrypt/live/<domain> - path to your secrets
    
    Set secret names as follows:
    
    prod/flaskapp for privkey.pem
+
    prod/flaskapp2 for fullchain.pem
-6. **Run two python scripts**
+8. **Run python script**
+
    python3 get_cred.py
 
-7. **Restart docker-compose**
+9. **Restart docker-compose**
    
    docker-compose --file docker-compose.yml down
    
@@ -79,8 +86,8 @@ If you want to host on AWS:
    
    docker-compose --file docker-compose.yml up
 
-8. **Please note you should update DNS name with your new IP address**
-9. **Your App is now available with chosen domain name** 
+10. **Please note you should update DNS name with your new IP address**
+11. **Your App is now available with chosen domain name** 
   
 ## Swagger
 **Uses route /docs by default**
