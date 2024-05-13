@@ -6,7 +6,7 @@
 :root {
   --black: #000000;
   --almost-black: #263238;
-  --white: #ffffff;
+  --white: #ffffffee;
   --almost-white: #FBFBFB;
   --grey-light: #CFD8DC;
   --grey: #B0BEC5;
@@ -31,12 +31,21 @@ body {
   line-height: 28px;
   color: var(--black);
   background: var(--grey-light);
+  background-image: url('https://coolbackgrounds.io/images/backgrounds/index/compute-ea4c57a4.png'); 
 }
 
 /* Typography */
 .center {
   text-align: center;
   margin: 14px;
+}
+
+.blackfont { 
+  color: var(--grey-dark);
+}
+
+.bigheader {
+  font-size: 32px;
 }
 
 .left {
@@ -47,7 +56,7 @@ h1 {
   margin: 0.5em 0 1em;
   font-size: 28px;
   line-height: 1.2;
-  color: var(--almost-black);
+  color: var(--almost-white);
 }
 
 h2 {
@@ -98,7 +107,7 @@ p {
   border-radius: 5px;
   background: var(--white);
   position: absolute;
-  bottom: 30px; 
+  top: 30px; 
   right: 30px; 
 }
 
@@ -170,7 +179,7 @@ label {
 
 /* Buttons */
 .btn {
-  margin: 0 0 24px;
+  margin: 0 0 0;
   padding: 11px 30px 10px;
   font-size: 14px;
   line-height: 24px;
@@ -207,6 +216,7 @@ label {
 }
 
 input[type=submit] {
-  margin: 34px auto 24px;
-  display: block;
+ /*  margin: 34px auto 24px; */
+  /* display: block; */
+  margin: 0 0 0;
 }
