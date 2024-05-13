@@ -28,14 +28,14 @@
             <div class="center">
                 <a href="{{ url_for('client_delete', id=session['client']['_id']) }}" 
                     class="btn btn--attention" 
-                    onclick="return confirm('Are you sure you want to delete data?');">
+                    onclick="return confirm('Are you sure you want to delete your data?');">
                     Delete</a>
             </div>
         </div>
 
         <div class="card">
 
-            <h1 class="center">Login/Registry</h1>
+            <h1 class="center">Login/Register</h1>
     
             <div class="center">
                 <a href="/user/login" class="btn">Login</a>
@@ -46,8 +46,9 @@
         </div>
     </div>
 
+    <h1><strong>Messages:</strong></h1>
     <div class="field">
-        <h1><strong>Messages:</strong></h1>
+        
 
         {% for data in data_db %}
         <div><div>

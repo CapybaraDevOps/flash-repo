@@ -65,6 +65,17 @@ p {
   display: flex;
 }
 
+.card-wrapper-first {
+  margin: 0 auto;
+  padding: 30px 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  height: 100vh;
+}
+
+
 .card {
   margin: 0 30px 60px;
   padding: 20px 40px;
@@ -73,6 +84,19 @@ p {
   border-radius: 5px;
   background: var(--white);
 }
+
+.card-signup {
+  margin: 0 30px 60px;
+  padding: 20px 40px;
+  width: var(460px);
+  box-shadow: 0 8px 26px -4px rgba(0,0,0,0.15);
+  border-radius: 5px;
+  background: var(--white);
+  position: absolute;
+  bottom: 30px; 
+  right: 30px; 
+}
+
 
 @media only screen and (max-width: 520px) {
   .card-wrapper {
