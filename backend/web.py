@@ -13,15 +13,15 @@ app = Flask(__name__)
 app.secret_key = b'\x9d\x18\x8bH`\x03\xae\x00\xf3L\xd3\xaf\x06\xc8\x9a\x92'
 app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1)
 
-# Local DB for Development
-# client = MongoClient('localhost', 27017)
-
 # Map variables
 for variable, value in os.environ.items():
     if variable.startswith("MONGO_"):
         env_name = variable.split("MONGO_")[1]
         app.config[env_name] = value
         print(env_name)
+
+# Local DB for Development
+# client = MongoClient('localhost', 27017)
 
 # Connect to Mongo
 client = MongoClient('mongodb', username=app.config['USER'], password=app.config['PASSWORD'], authSource='flask_database', authMechanism='SCRAM-SHA-256')
@@ -93,7 +93,7 @@ from modules.client import Client
 from modules.user import UserAdmin
 
 # Create Admin acount
-UserAdmin().signup(name='admin', email='admin@mail.com', password='1111')
+UserAdmin().signup(name=app.config['ADMIN_USER'], email=app.config['ADMIN_EMAIL'], password=app.config['ADMIN_PASS'])
 
 @app.route('/')
 def home():
