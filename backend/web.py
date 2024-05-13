@@ -4,6 +4,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from werkzeug.middleware.proxy_fix import ProxyFix
 from functools import wraps
 import os
+import redis
 
 ############## Initialization ##############
 
@@ -24,6 +25,9 @@ for variable, value in os.environ.items():
 
 # Connect to Mongo
 client = MongoClient('mongodb', username=app.config['USER'], password=app.config['PASSWORD'], authSource='flask_database', authMechanism='SCRAM-SHA-256')
+
+# Initialize Redis client
+redis_client = redis.Redis(host='redis', port=6379, charset="utf-8", decode_responses=True, db=0)
 
 # Database
 db = client.flask_database
