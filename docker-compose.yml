@@ -35,7 +35,11 @@ services:
       - ./backend/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
     env_file: [.env-mongo, .env] 
 
-
+  redis:
+    image: 'redis:latest'
+    container_name: redis
+    ports:
+     - 6379:6379
   
   flask:
     # path to  Dockerfile
@@ -50,6 +54,7 @@ services:
       - ./backend:/backend
     depends_on:
       -  mongodb
+      -  redis
     # port mapping
     networks:
       - backnet
