@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request, session, redirect
 from web import clients as db
+from web import redis_client
 from datetime import datetime
 import uuid
 import hashlib
@@ -10,6 +11,8 @@ class Client:
     def start_session(self, client):
         session['identify'] = True
         session['client'] = client
+        # Save client session to Redis DB
+        redis_client.set('client', str( session['client']))
         if client['status'] == 'declined':
             return redirect('/client/decline/dashboard/')
         if 'name' in client:
@@ -18,6 +21,8 @@ class Client:
     
     def sesion_update(self):
         session['client'] = db.find_one({'_id': session['client']['_id'] })
+        # Update client session in Redis DB
+        redis_client.set('client', str(session['client']))
 
     def create_record(self, status):
 
@@ -102,5 +107,5 @@ class Client:
     def delete_record(self, id):
         db.delete_one({'_id': id})
         session.clear()
+        redis_client.delete('client')
         return redirect('/')
-

@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, session, redirect
 from passlib.hash import pbkdf2_sha256
 from web import users as db_users
 from web import clients as db_client
+from web import redis_client
 import uuid
 
 class User:
@@ -10,6 +11,8 @@ class User:
         del user['password']
         session['logged_in'] = True
         session['user'] = user
+        # Save user's session to Redis DB
+        redis_client.set('user', str(session['user']))
         return jsonify(user), 200
 
     def signup(self):
@@ -43,6 +46,7 @@ class User:
     
     def signout(self):
         session.clear()
+        redis_client.delete('user')
         return redirect('/')
     
     def login(self):
@@ -100,5 +104,3 @@ class UserAdmin(User):
             return redirect('/user/dashboard/admin/')
         else:
             return jsonify({ "error": "Admin permission required"}), 401
-
-    
