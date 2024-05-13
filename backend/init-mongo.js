@@ -1,6 +1,4 @@
 db.getSiblingDB('admin');
-print(process.env.MONGO_INITDB_ROOT_USERNAME);
-print(process.env.MONGO_INITDB_ROOT_PASSWORD);
 db.auth(
     process.env.MONGO_INITDB_ROOT_USERNAME,
     process.env.MONGO_INITDB_ROOT_PASSWORD

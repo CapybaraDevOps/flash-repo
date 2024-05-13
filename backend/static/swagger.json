@@ -9,28 +9,18 @@
     "description": "Github Repository",
     "url": "https://github.com/CapybaraDevOps/flask-repo"
   },
-  "servers": [
-    {
-      "url": "http://www.capybara.pp.ua/",
-      "description": "Production server"
-    },
-    {
-      "url": "http://localhost/",
-      "description": "Localhost"
-    }
-  ],
   "tags": [
     {
       "name": "Index",
       "description": "Index route endpoints"
     },
     {
-      "name": "Form",
-      "description": "Form route endpoints"
+      "name": "User",
+      "description": "User route endpoints"
     },
     {
-      "name": "Declined",
-      "description": "Declined route endpoints"
+      "name": "Client",
+      "description": "Client route endpoints"
     }
   ],
   "paths": {
@@ -45,36 +35,57 @@
           "200": {
             "description": "Successful operation"
           },
+          "302": {
+            "description": "Successful operation with redirect to /client/dashboard"
+          },
           "400": {
             "description": "Invalid status value"
           }
         }
-      },
+      }
+    },
+    "/user/login/": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Gets user login page",
+        "operationId": "getUserLoginPage",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/user/login": {
       "post": {
         "tags": [
-          "Index"
+          "User"
         ],
-        "summary": "Adds or updates client in the database",
-        "description": "Add or update client in the database (yes, no, update, delete)",
-        "operationId": "placeOrder",
+        "summary": "Adds client's data to the database",
+        "description": "Add client's data to the database",
+        "operationId": "postUserLogin",
         "requestBody": {
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
                 "type": "object",
                 "required": [
-                  "action"
+                  "name",
+                  "password"
                 ],
                 "properties": {
-                  "action": {
+                  "name": {
                     "type": "string",
-                    "enum": [
-                      "yes",
-                      "no",
-                      "update",
-                      "delete"
-                    ],
-                    "default": "yes"
+                    "default": "TestUser"
+                  },
+                  "password": {
+                    "type": "string",
+                    "default": "TestPass"
                   }
                 }
               }
@@ -85,8 +96,108 @@
           "200": {
             "description": "Successful operation"
           },
+          "401": {
+            "description": "Invalid login credentials"
+          }
+        }
+      }
+    },
+    "/user/registry/": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Gets user register page",
+        "operationId": "getUserRegisterPage",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/user/dashboard/": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Gets user dashboard page",
+        "operationId": "getUserDashboardPage",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
           "302": {
-            "description": "Successful operation with redirect"
+            "description": "Redirected"
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/user/dashboard/admin/": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Gets admin dashboard page",
+        "operationId": "getAdminDashboardPage",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "302": {
+            "description": "Redirected"
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/user/signup": {
+      "post": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Adds new user to the database",
+        "description": "Add new user to the database",
+        "operationId": "postAddUser",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "default": "TestName"
+                  },
+                  "email": {
+                    "type": "string",
+                    "default": "TestEmail@gmail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "default": "TestPass"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful operation"
           },
           "400": {
             "description": "Invalid input"
@@ -94,10 +205,179 @@
         }
       }
     },
-    "/{id}/delete": {
-      "post": {
+    "/user/signout": {
+      "get": {
         "tags": [
-          "Index"
+          "User"
+        ],
+        "summary": "Sign out current user",
+        "operationId": "getUserSignout",
+        "responses": {
+          "302": {
+            "description": "Successful operation. Redirect to index"
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/user/admin/delete/{id}": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Deletes the client from the database",
+        "description": "Delete the client from the database",
+        "operationId": "adminDeleteClient",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ObjectId of the client that needs to be fetched",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "302": {
+            "description": "Successful operation with redirect"
+          },
+          "400": {
+            "description": "Invalid input"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/user/admin/delete_all": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Deletes all clients from the database",
+        "operationId": "deleteAllClients",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "302": {
+            "description": "Successful operation with redirect"
+          },
+          "400": {
+            "description": "Invalid status value"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/client/dashboard/": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Gets client dashboard page",
+        "operationId": "getClientDashboardPage",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "302": {
+            "description": "Redirected"
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/client/updatedata/": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Gets Updata data page",
+        "operationId": "getUpdateDataPage",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "302": {
+            "description": "Redirected"
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/client/decline/dashboard/": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Gets Declined page",
+        "operationId": "getDeclinedPage",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "302": {
+            "description": "Redirected"
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/client/decline/": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Declines the data process request",
+        "operationId": "declineRequest",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/client/accept/": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Accepts the data process request",
+        "operationId": "acceptRequest",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
+    },
+    "/client/delete/{id}/": {
+      "get": {
+        "tags": [
+          "Client"
         ],
         "summary": "Deletes the client from the database",
         "description": "Delete the client from the database",
@@ -126,96 +406,31 @@
         }
       }
     },
-    "/form": {
-      "get": {
-        "tags": [
-          "Form"
-        ],
-        "summary": "Gets form page",
-        "operationId": "getFormPage",
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          },
-          "400": {
-            "description": "Invalid status value"
-          }
-        }
-      },
+    "/client/updata": {
       "post": {
         "tags": [
-          "Form"
+          "Client"
         ],
-        "summary": "Adds client's data to the database",
-        "description": "Add client's data to the database",
-        "operationId": "addClientData",
+        "summary": "Updates client data",
+        "description": "Update client data",
+        "operationId": "updateClientData",
         "requestBody": {
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
                 "type": "object",
                 "required": [
+                  "name",
                   "data"
                 ],
                 "properties": {
+                  "name": {
+                    "type": "string",
+                    "default": "TestName"
+                  },
                   "data": {
                     "type": "string",
-                    "default": "Test"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          },
-          "400": {
-            "description": "Invalid input"
-          }
-        }
-      }
-    },
-    "/declined": {
-      "get": {
-        "tags": [
-          "Declined"
-        ],
-        "summary": "Gets Declined page",
-        "operationId": "getDeclinedPage",
-        "responses": {
-          "200": {
-            "description": "Successful operation"
-          },
-          "400": {
-            "description": "Invalid status value"
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Declined"
-        ],
-        "summary": "Deletes or stores client's data in declined page",
-        "description": "Delete or store client's data in declined page (accept, delete)",
-        "operationId": "addOrRemoveData",
-        "requestBody": {
-          "content": {
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "action"
-                ],
-                "properties": {
-                  "action": {
-                    "type": "string",
-                    "enum": [
-                      "accept",
-                      "delete"
-                    ],
-                    "default": "accept"
+                    "default": "UpdatedData"
                   }
                 }
               }
@@ -234,10 +449,52 @@
           }
         }
       }
+    },
+    "/client/change_policy": {
+      "get": {
+        "tags": [
+          "Client"
+        ],
+        "summary": "Changes clients choice to accepted",
+        "operationId": "changePolicy",
+        "responses": {
+          "200": {
+            "description": "Successful operation"
+          },
+          "400": {
+            "description": "Invalid status value"
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "example": "<Insert your value here or drop this parameter from request>"
+          },
+          "name": {
+            "type": "string",
+            "example": "ExampleUser"
+          },
+          "email": {
+            "type": "string",
+            "example": "example@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "1232453532Abcd"
+          },
+          "administrator": {
+            "type": "boolean",
+            "example": false
+          }
+        }
+      },
       "Client": {
         "type": "object",
         "properties": {
@@ -271,6 +528,16 @@
           "application/json": {
             "schema": {
               "$ref": "#/components/schemas/Client"
+            }
+          }
+        }
+      },
+      "User": {
+        "description": "User object that needs to be added to the database",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/User"
             }
           }
         }
