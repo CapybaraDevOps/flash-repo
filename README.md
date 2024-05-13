@@ -22,6 +22,11 @@ If you want to host on AWS:
   MONGO_USER=flask_user
   MONGO_PASSWORD=flask_password
   MONGO_DB=flask_database
+
+  #Admin creds
+  ADMIN_USER=admin
+  ADMIN_EMAIL=admin@mail.com
+  ADMIN_PASS=1111
   ```
 
   ##### .env-mongo example

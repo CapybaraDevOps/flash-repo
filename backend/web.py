@@ -89,7 +89,7 @@ from modules.client import Client
 from modules.user import UserAdmin
 
 # Create Admin acount
-UserAdmin().signup(name='admin', email='admin@mail.com', password='1111')
+UserAdmin().signup(name=os.environ['ADMIN_USER'], email=os.environ['ADMIN_EMAIL'], password=os.environ['ADMIN_PASS'])
 
 @app.route('/')
 def home():
