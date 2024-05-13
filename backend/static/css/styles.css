@@ -36,6 +36,11 @@ body {
 /* Typography */
 .center {
   text-align: center;
+  margin: 14px;
+}
+
+.left {
+  text-align: left;
 }
 
 h1 {
