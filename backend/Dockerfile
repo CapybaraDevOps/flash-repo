@@ -3,11 +3,7 @@ FROM python:3.9
 # Specifying a working directory
 WORKDIR /backend
 # download & install dependencies
-COPY requirements.txt /backend
-RUN pip3 install --upgrade pip -r requirements.txt
-
-# copy the directory with Dockerfile, 
-# into working directory
 COPY . /backend
+RUN pip3 install --upgrade pip --no-cache-dir -r requirements.txt
 
 CMD ["flask", "run"]
