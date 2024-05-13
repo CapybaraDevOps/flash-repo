@@ -2,12 +2,10 @@
 
 {% block content %}
 
-<h1 class="center">Home Page</h1>
-
-<div class="card-wrapper">
+<div class="card-wrapper-first">
     
     <div class="card">
-        <h1 class="center">Privacy Policy Agreements</h1>
+        <h1 class="center blackfont">Privacy Policy Agreements</h1>
         <p class="center">Do you allow us to save your data?</p>
 
         <div class="center">
@@ -15,22 +13,19 @@
             <a href="/client/decline" class="btn btn--attention">Decline</a>
         </div>
     </div>
+
+        <div class="card-signup">
+    
+            <h1 class="center blackfont">Login/Register</h1>
+            <div class="center">
+                <a href="/user/login" class="btn">Sign in</a>
+                <a href="/user/registry" class="btn btn--secondary">Sign up</a>
+            </div>
+        </div>
+
 </div>
 
-<div class="card-wrapper">
 
-    <div class="card">
-
-        <h1 class="center">Login/Registry</h1>
-
-        <div class="center">
-            <a href="user/login" class="btn">Login</a>
-        </div>
-        <div class="center">
-            <a href="user/registry" class="btn btn--secondary">Registry</a>
-        </div>
-    </div>
-</div>
 
 
 
