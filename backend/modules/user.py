@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, session, redirect
 from passlib.hash import pbkdf2_sha256
 from web import users as db_users
+from web import services as db_services
 from web import clients as db_client
 from web import redis_client
 import uuid
@@ -23,9 +24,9 @@ class User:
             "name": request.form.get('name'),
             "email": request.form.get('email'),
             "password": request.form.get('password'),
-            "administrator": False
+            "administrator": False,
+            "roles": [ {"name": "default", "permissions": { "gogs_prod", "geo_prod" } }]
         }
-
         # Encrypt the password
         user['password'] = pbkdf2_sha256.encrypt(user['password'])
 
@@ -94,6 +95,15 @@ class UserAdmin(User):
     def fetch_data(self):
         return list(db_client.find())
     
+    def update_roles(self, id, rolename, permissions):
+        if session['user']['administrator'] == True:
+            db_client.update_one(
+                {'_id': id},
+                {'$set': {'roles.name': rolename}},
+                {'$set': {'roles.permissions': permissions}}
+            )
+            return redirect('/user/dashboard/admin/')
+
     def delete_record(self, id):
         db_client.delete_one({'_id': id})
         return redirect('/user/dashboard/admin/')

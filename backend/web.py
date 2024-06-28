@@ -35,6 +35,7 @@ db = client.flask_database
 # Collection
 users = db.users
 clients = db.clients
+services = db.services
 
 ############## Swagger ##############
 SWAGGER_URL = '/docs'  # URL route for Swagger UI
