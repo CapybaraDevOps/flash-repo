@@ -220,3 +220,93 @@ input[type=submit] {
   /* display: block; */
   margin: 0 0 0;
 }
+
+/* Create service form */
+.open-button {
+  background-color: #555;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  opacity: 0.8;
+  bottom: 23px;
+  right: 28px;
+  width: 150px;
+  margin: 30px;
+  border-radius: 4px;
+  font-family: sans-serif;
+}
+
+.form-popup {
+  display: none;
+  bottom: 0;
+  right: 15px;
+  border: 3px solid #f1f1f1;
+  z-index: 9;
+}
+
+.form-container {
+  max-width: 800px;
+  padding: 10px;
+  background-color: white;
+}
+
+.form-container input[type=text], .form-container input[type=url] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+.form-container input[type=text]:focus, .form-container input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+.form-container .btn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom:10px;
+  opacity: 0.8;
+}
+
+.form-container .cancel {
+  background-color: red;
+}
+
+.form-container .btn:hover, .open-button:hover {
+  opacity: 1;
+}
+
+.service-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.service-buttons button {
+  margin: 0 0 0;
+  padding: 11px 30px 10px;
+  font-size: 14px;
+  line-height: 24px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--white);
+  border: none;
+  border-radius: 4px;
+  outline: none;
+  cursor: pointer;
+  display: inline-block;
+  background: var(--primary);
+  transition: color .15s ease, background-color .15s ease;
+}
+
+.service-buttons button:hover {
+  background: var(--primary-dark);
+}

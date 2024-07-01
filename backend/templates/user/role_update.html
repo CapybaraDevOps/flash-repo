@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="card-wrapper">
+
+        <div class="card">
+
+            <h1 class="center blackfont">Type information</h1>
+
+            <form name="roles_update" method="POST" action="/user/admin/update_roles/{{ id }}">
+                <label for="Role name:">Role name:</label>
+                <select name="rolename" id="rolename">
+                    <option value="default" selected>default</option>
+                    <option value="admin">admin</option>
+                </select>                
+                <div class="center">
+                    <input type="submit" value="Submit" class="btn">
+                    <a href="/user/dashboard/admin" class="btn btn--secondary">Dashboard</a>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+{% endblock %}

@@ -92,6 +92,7 @@ def clinet_declined(f):
 from modules import routes
 from modules.client import Client
 from modules.user import UserAdmin
+from modules.service import Service
 
 # Create Admin acount
 UserAdmin().signup(name=app.config['ADMIN_USER'], email=app.config['ADMIN_EMAIL'], password=app.config['ADMIN_PASS'])
@@ -100,7 +101,8 @@ UserAdmin().signup(name=app.config['ADMIN_USER'], email=app.config['ADMIN_EMAIL'
 def home():
     if Client().client_exist():
         return redirect('/client/dashboard')
-    return render_template('home.html')
+    service_data = Service().fetch_services()
+    return render_template('home.html', service_data=service_data)
 
 ############## Users HTML ##############
 
@@ -108,13 +110,15 @@ def home():
 @admin_required
 def dashboard():
     data_db = Client().fetch_data()
-    return render_template('user/dashboard.html', data_db=data_db)
+    service_data = Service().fetch_services()
+    return render_template('user/dashboard.html', data_db=data_db, service_data=service_data)
 
 @app.route('/user/dashboard/admin/')
 @login_required
 def client_dashboard_admin():
     data_db = UserAdmin().fetch_data()
-    return render_template('user/dashboard_admin.html', data_db=data_db)
+    service_data = Service().fetch_services()
+    return render_template('user/dashboard_admin.html', data_db=data_db, service_data=service_data)
 
 @app.route('/user/login/')
 def login():
@@ -123,6 +127,10 @@ def login():
 @app.route('/user/registry/')
 def registry():
     return render_template('user/registry.html')
+
+@app.route('/user/admin/roleupdate/<id>')
+def user_role_update(id):
+    return render_template('user/role_update.html', id=id)
 
 ############## Clients HTML ##############
 
@@ -145,3 +153,9 @@ def client_dashboard_decline():
     if Client().check_if_decline():
         return redirect('/client/dashboard')
     return render_template('client/dashboard_decline.html')
+
+############## Services HTML ##############
+
+@app.route('/user/admin/serviceupdate/<id>')
+def service_update_data(id):
+    return render_template('service/service_update.html', id=id)

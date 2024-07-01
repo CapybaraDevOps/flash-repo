@@ -1,7 +1,8 @@
-from flask import Flask, jsonify, request, session, redirect
+from flask import Flask, jsonify, request, session, redirect, render_template
 from passlib.hash import pbkdf2_sha256
 from web import users as db_users
 from web import services as db_services
+from bson import ObjectId
 import uuid
 
 class Service:
@@ -12,7 +13,7 @@ class Service:
             "name": request.form.get('name'),
             "serviceaddress": request.form.get('serviceaddress'),
             "permission": request.form.get('permission'),
-            "enabled": True
+            "enabled": request.form.get('enabled', 'off')
         }
         # Check for existing service
         if db_services.find_one({ 
@@ -40,18 +41,33 @@ class Service:
         
         return jsonify({ "error": "Invalid service data"}), 401
     
+    def fetch_services(self):
+        return list(db_services.find())
+    
     def update_service(self, service):
+        update_fields = {
+        "name": request.form.get('name'),
+        "serviceaddress": request.form.get('serviceaddress'),
+        "permission": request.form.get('permission'),
+        "enabled": request.form.get('enabled', 'off')
+    }
         new_service = db_services.update_one(
             {'_id': service['_id']},
-            {'name': service['name']},
-            {'serviceaddress': service['serviceaddress']},
-            {'permission': service['permission']},
-            {'enabled': service['enabled']},
+            {'$set': update_fields}
         )
-        if (new_service):
-            return jsonify(new_service), 200
+        updated_service = db_services.find_one({'_id': service['_id']})
+        if (updated_service):
+            return jsonify(updated_service), 200
         return jsonify({ "error": "Service update failed"}), 400
 
     def delete_service(self, id):
         db_services.delete_one({'_id': id})
         return redirect('/user/dashboard/admin/')
+    
+    def delete_service_all(self):
+        if session['user']['administrator'] == True:
+            db_services.delete_many({})
+            return redirect('/user/dashboard/admin/')
+        else:
+            return jsonify({ "error": "Admin permission required"}), 401
+ 

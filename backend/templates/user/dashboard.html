@@ -13,6 +13,7 @@
                 <strong>ID:</strong> {{ session['user']['_id'] }}
                 <strong>Name:</strong> {{ session['user']['name'] }}
                 <strong>Email:</strong> {{ session['user']['email'] }}
+                <strong>Roles:</strong> {{ session['user']['roles'] }}
             </p>
         </div>
 
@@ -25,20 +26,24 @@
                 <a href="/user/signout" class="btn btn--attention">Sign Out</a>
             </div>
         </div>
-    </div>
 
-    <h1 class="left"><strong> Messages:</strong></h1>
-    <div class="field">
-        {% for data in data_db %}
-        <div><div>
-            {% if data['name'] %}
-                <strong>Name:</strong>      {{ data['name'] }}
-                <strong>Message:</strong>   {{ data['data'] }}
-                <div>{{ data['time'] }}</div>
-            {% endif %}
-        </div></div>
-        
-        {% endfor %}
+        <div class="card">
+            <h1 class="center blackfont">Services</h1>
+    
+            <div class="center">
+                <div class="service-buttons">
+                    {% for service in service_data %}
+                        {% for role in session['user']['roles'] %}
+                            {% if role['name'] == service['permission'] %}
+                                <a href="{{ service['serviceaddress'] }}" target="_blank">
+                                    <button>{{ service['name'] }}</button>
+                                </a>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
