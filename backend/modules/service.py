@@ -1,8 +1,6 @@
-from flask import Flask, jsonify, request, session, redirect, render_template
+from flask import Flask, jsonify, request, session, redirect
 from passlib.hash import pbkdf2_sha256
-from web import users as db_users
 from web import services as db_services
-from bson import ObjectId
 import uuid
 
 class Service:

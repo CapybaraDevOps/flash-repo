@@ -50,6 +50,18 @@
             </div>
         </div>
 
+        <div class="card">
+
+            <h1 class="center blackfont">Delete All Roles</h1>
+            <p class="center">Caution, this will delete all data permanently!</p>
+
+            <div class="center">
+                <a href="/user/admin/delete_role_all" class="btn btn--attention"
+                onclick="return confirm('Are you sure you want to Delete All Roles?');"
+                >Delete</a>
+            </div>
+        </div>
+
     </div>
     <h1><strong>Services:</strong></h1>
     <div class="field">
@@ -66,9 +78,9 @@
                 pattern="https://.*" size="30" required /><br>
                 <label for="permission">Permission:</label>
                 <select name="permission" id="permission">
-                    <option value="default" selected>default</option>
-                    <option value="admin">admin</option>
-                    <option value="java">Java</option>
+                    <option value="prod" selected>prod</option>
+                    <option value="dev">dev</option>
+                    <option value="stage">stage</option>
                 </select>
                 <label for="enabled">Enabled:</label>
                 <input type="checkbox" id="enabled" name="enabled"><br>
@@ -91,6 +103,46 @@
         </div>
         {% endfor %}
     </div>
+    <div class="field">
+        <button class="open-button" onclick="openForm_Role()">Create Role</button>
+
+        <div class="form-popup" id="Role_Form">
+            <form action="/action_page.php" class="form-container" name="create_role_form">
+                <h2>Create Role</h2>
+    
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br>
+                <label for="permissions">Permissions:</label>
+                <div id="permissions">
+                    <label>
+                        <input type="checkbox" name="permission" value="prod" checked> prod
+                    </label>
+                    <label>
+                        <input type="checkbox" name="permission" value="dev"> dev
+                    </label>
+                    <label>
+                        <input type="checkbox" name="permission" value="stage"> stage
+                    </label>
+                </div>
+                <input type="hidden" name="permissions_list" id="permissions_list">
+                <button type="submit" class="btn btn--attention">Create</button>
+                <button type="button" class="btn cancel" onclick="closeForm_Role()">Close</button>
+            </form>
+        </div>
+        {% for role in role_data %}
+        <div>
+            <div>
+                <strong>Name:</strong> {{ role['name'] }}<br>
+                <strong>Permission:</strong> {{ role['permission'] }}<br>
+                <div>
+                    <a href="{{ url_for('role_delete', id=role['_id']) }}" class="btn btn--attention">Delete</a>
+                    <a href="{{ url_for('roles_update_data', id=role['_id']) }}" class="btn">Change</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
     <h1><strong>All Users:</strong></h1>
     <div class="field">
         {% for data in data_db %}

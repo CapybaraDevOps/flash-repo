@@ -10,7 +10,7 @@
         <div class="center">
             <div class="service-buttons">
                 {% for service in service_data %}
-                    {% if 'default' in service['permission'] %}
+                    {% if 'prod' in service['permission'] %}
                         <a href="{{ service['serviceaddress'] }}" target="_blank">
                             <button>{{ service['name'] }}</button>
                         </a>
@@ -30,9 +30,5 @@
         </div>
 
 </div>
-
-
-
-
 
 {% endblock %}

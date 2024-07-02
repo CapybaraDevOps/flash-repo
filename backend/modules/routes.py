@@ -3,7 +3,9 @@ from web import app
 from modules.user import User, UserAdmin
 from modules.client import Client
 from modules.service import Service
+from modules.role import Role
 from web import services as db_services
+from web import role as db_role
 
 ############ Users Route ############
 
@@ -37,25 +39,9 @@ def users_records_all():
 
 ############ Clients Route ############
 
-@app.route('/client/decline')
-def decline():
-  return Client().client_decline()
-
-@app.route('/client/accept')
-def accept():
-  return Client().client_accept()
-
 @app.route('/client/delete/<id>')
 def client_delete(id):
   return Client().delete_record(id)
-
-@app.route('/client/updata', methods=['POST'])
-def client_updata():
-  return Client().client_updata()
-
-@app.route('/client/change_policy')
-def change_policy():
-  return Client().change_policy()
 
 ############ Service Route ############
 
@@ -75,3 +61,22 @@ def service_delete(id):
 @app.route('/user/admin/delete_service_all')
 def delete_all_service():
   return Service().delete_service_all()
+
+############ Role Route ############
+
+@app.route('/user/admin/role_create', methods=['POST'])
+def role_create():
+  return Role().create_role()
+
+@app.route('/user/admin/role_update/<id>', methods=['GET', 'POST'])
+def role_update(id):
+  role = db_role.find_one({'_id': id})
+  return Role().update_role(role)
+
+@app.route('/user/admin/delete_role/<id>')
+def role_delete(id):
+  return Role().delete_role(id)
+
+@app.route('/user/admin/delete_role_all')
+def delete_all_role():
+  return Role().delete_role_all()

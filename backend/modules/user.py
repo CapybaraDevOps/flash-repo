@@ -1,8 +1,7 @@
 from flask import Flask, jsonify, request, session, redirect
 from passlib.hash import pbkdf2_sha256
 from web import users as db_users
-from web import services as db_services
-from web import clients as db_client
+from web import role as db_role
 from web import redis_client
 import uuid
 
@@ -25,7 +24,7 @@ class User:
             "email": request.form.get('email'),
             "password": request.form.get('password'),
             "administrator": False,
-            "roles": [ {"name": "default", "permissions": [ "gogs_prod", "geo_prod" ] }]
+            "roles": [ {"name": "default", "permissions": [ "prod" ] }]
         }
         # Encrypt the password
         user['password'] = pbkdf2_sha256.encrypt(user['password'])
@@ -78,7 +77,7 @@ class UserAdmin(User):
             "email": email,
             "password": password,
             "administrator": True, # Set administrator to True for UserAdmin
-            "roles": [ {"name": "admin", "permissions": [ "gogs_prod", "geo_prod", "gogs_dev", "geo_dev", "gogs_stage", "geo_stage" ] }]  
+            "roles": [ {"name": "admin", "permissions": [ "prod", "dev", "stage" ] }]  
         }
 
         # Encrypt the password
@@ -98,16 +97,12 @@ class UserAdmin(User):
     
     def update_roles(self, id):
         if session['user']['administrator'] == True:
-            #user = db_users.find_one({'_id': id})
             rolename = request.form.get('rolename')
-            if rolename == 'default':
-                permissions = ["gogs_prod", "geo_prod"]
-            elif rolename == 'admin':
-                permissions = ["gogs_prod", "geo_prod", "gogs_dev", "geo_dev", "gogs_stage", "geo_stage"]
-   
+            role = db_role.find_one({'name': rolename})
+
             db_users.update_one(
                 {'_id': id},
-                {'$set': {'roles.0.name': rolename, 'roles.0.permissions': permissions}}
+                {'$set': {'roles.0.name': rolename, 'roles.0.permissions': role['permission']}}
             )
             return jsonify({"succes": "Roles update worked"}), 200
         return jsonify({ "error": "Roles update failed"}), 400

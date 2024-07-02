@@ -44,30 +44,7 @@ $("form[name=login_form]").submit(function(e) {
     e.preventDefault();
 });
 
-$("form[name=update_data]").submit(function(e) {
-    var $form = $(this);
-    var $error = $form.find(".error");
-    var data = $form.serialize();
-
-    $.ajax({
-        url: "/client/updata",
-        type: "POST",
-        data: data,
-        dataType: "json",
-        success: function(resp) {
-            console.log(resp);
-            window.location.href = "/client/dashboard/";
-        },
-        error: function(resp) {
-            console.log(resp);
-            $error.text(resp.responseJSON.error).removeClass("error--hidden");
-        }
-    });
-
-    e.preventDefault();
-});
-
-$("form[name=service_update]").submit(function(e) {
+$("form[name=update_form]").submit(function(e) {
     var $form = $(this);
     var $error = $form.find(".error");
     var data = $form.serialize();
@@ -90,26 +67,6 @@ $("form[name=service_update]").submit(function(e) {
     e.preventDefault();
 });
 
-
-function addFn() {
-    const divEle = document.getElementById("inputFields");
-    divEle.innerHTML += `
-<div>
-    <form name="create_service_form">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required><br>
-        <label for="serviceaddress">Address:</label>
-        <input type="text" id="serviceaddress" name="serviceaddress" required><br>
-        <label for="permission">Permission:</label>
-        <input type="text" id="permission" name="permission" required><br>
-        <label for="enabled">Enabled:</label>
-        <input type="checkbox" id="enabled" name="enabled"><br>
-        <button type="submit" class="btn btn--attention">Create</button>
-    </form>
-</div>
-`;
-}
-
 $("form[name=create_service_form]").submit(function(e) {
     var $form = $(this);
     var $error = $form.find(".error");
@@ -123,7 +80,6 @@ $("form[name=create_service_form]").submit(function(e) {
         success: function(resp) {
             console.log(resp);
             location.reload();
-            // window.location.href = "/user/dashboard/";
         },
         error: function(resp) {
             console.log(resp);
@@ -142,20 +98,28 @@ function closeForm() {
     document.getElementById("myForm").style.display = "none";
   }
 
+function openForm_Role() {
+    document.getElementById("Role_Form").style.display = "block";
+  }
+  
+function closeForm_Role() {
+    document.getElementById("Role_Form").style.display = "none";
+  }
 
-  $("form[name=roles_update]").submit(function(e) {
+
+  $("form[name=create_role_form]").submit(function(e) {
     var $form = $(this);
     var $error = $form.find(".error");
     var data = $form.serialize();
-    var url = $form.attr("action");
+
     $.ajax({
-        url: url,
+        url: "/user/admin/role_create",
         type: "POST",
         data: data,
         dataType: "json",
         success: function(resp) {
             console.log(resp);
-            window.location.href = "/user/dashboard/admin/";
+            location.reload();
         },
         error: function(resp) {
             console.log(resp);
@@ -166,4 +130,21 @@ function closeForm() {
     e.preventDefault();
 });
 
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('#permissions input[type="checkbox"]');
+    const hiddenInput = document.getElementById('permissions_list');
+
+    function updatePermissionsList() {
+        const selectedPermissions = Array.from(checkboxes)
+            .filter(checkbox => checkbox.checked)
+            .map(checkbox => checkbox.value);
+        hiddenInput.value = JSON.stringify(selectedPermissions);
+    }
+
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', updatePermissionsList);
+    });
+
+    updatePermissionsList();
+});
 

@@ -34,7 +34,7 @@
                 <div class="service-buttons">
                     {% for service in service_data %}
                         {% for role in session['user']['roles'] %}
-                            {% if role['name'] == service['permission'] %}
+                            {% if service['permission'] in role['permissions'] %}
                                 <a href="{{ service['serviceaddress'] }}" target="_blank">
                                     <button>{{ service['name'] }}</button>
                                 </a>

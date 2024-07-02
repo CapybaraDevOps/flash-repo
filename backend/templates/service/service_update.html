@@ -7,7 +7,7 @@
 
             <h1 class="center blackfont">Type information</h1>
 
-            <form name="service_update" method="POST" action="/user/admin/service_update/{{ id }}">
+            <form name="update_form" method="POST" action="/user/admin/service_update/{{ id }}">
                 <label for="name">Name:</label>
                 <input type="text" id="name" name="name" required><br>
                 <label for="serviceaddress">Address:</label>
@@ -15,9 +15,9 @@
                 pattern="https://.*" size="30" required /><br>
                 <label for="permission">Permission:</label>
                 <select name="permission" id="permission">
-                    <option value="default" selected>default</option>
-                    <option value="admin">admin</option>
-                    <option value="java">Java</option>
+                    <option value="prod" selected>prod</option>
+                    <option value="dev">dev</option>
+                    <option value="stage">stage</option>
                 </select>
                 <label for="enabled">Enabled:</label>
                 <input type="checkbox" id="enabled" name="enabled"><br>

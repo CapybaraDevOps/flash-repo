@@ -7,11 +7,12 @@
 
             <h1 class="center blackfont">Type information</h1>
 
-            <form name="roles_update" method="POST" action="/user/admin/update_roles/{{ id }}">
+            <form name="update_form" method="POST" action="/user/admin/update_roles/{{ id }}">
                 <label for="Role name:">Role name:</label>
                 <select name="rolename" id="rolename">
-                    <option value="default" selected>default</option>
-                    <option value="admin">admin</option>
+                    {% for role in role_data %}
+                    <option value="{{ role['name'] }}">{{ role['name'] }}</option>
+                    {% endfor %}
                 </select>                
                 <div class="center">
                     <input type="submit" value="Submit" class="btn">
