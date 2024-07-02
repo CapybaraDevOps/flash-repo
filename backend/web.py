@@ -36,6 +36,7 @@ db = client.flask_database
 users = db.users
 clients = db.clients
 services = db.services
+role = db.role
 
 ############## Swagger ##############
 SWAGGER_URL = '/docs'  # URL route for Swagger UI
@@ -79,28 +80,20 @@ def identify_required(f):
             return redirect('/')
     return wrap
 
-def clinet_declined(f):
-    @wraps(f)
-    def wrap(*args, **kwardgs):
-        if session['client']['status'] == 'declined':
-            return redirect('/client/decline/dashboard/')
-        else:
-            return f(*args, **kwardgs)
-    return wrap
-
 ############## Modules ##############
 from modules import routes
 from modules.client import Client
 from modules.user import UserAdmin
+from modules.service import Service
+from modules.role import Role
 
 # Create Admin acount
 UserAdmin().signup(name=app.config['ADMIN_USER'], email=app.config['ADMIN_EMAIL'], password=app.config['ADMIN_PASS'])
 
 @app.route('/')
 def home():
-    if Client().client_exist():
-        return redirect('/client/dashboard')
-    return render_template('home.html')
+    service_data = Service().fetch_services()
+    return render_template('home.html', service_data=service_data)
 
 ############## Users HTML ##############
 
@@ -108,13 +101,16 @@ def home():
 @admin_required
 def dashboard():
     data_db = Client().fetch_data()
-    return render_template('user/dashboard.html', data_db=data_db)
+    service_data = Service().fetch_services()
+    return render_template('user/dashboard.html', data_db=data_db, service_data=service_data)
 
 @app.route('/user/dashboard/admin/')
 @login_required
 def client_dashboard_admin():
     data_db = UserAdmin().fetch_data()
-    return render_template('user/dashboard_admin.html', data_db=data_db)
+    service_data = Service().fetch_services()
+    role_data = Role().fetch_roles()
+    return render_template('user/dashboard_admin.html', data_db=data_db, service_data=service_data, role_data=role_data)
 
 @app.route('/user/login/')
 def login():
@@ -124,24 +120,19 @@ def login():
 def registry():
     return render_template('user/registry.html')
 
-############## Clients HTML ##############
+@app.route('/user/admin/roleupdate/<id>')
+def user_role_update(id):
+    role_data = Role().fetch_roles()
+    return render_template('user/role_update.html', id=id, role_data=role_data)
 
-@app.route('/client/dashboard/')
-@clinet_declined
-@identify_required
-def client_dashboard():
-    data_db = Client().fetch_data()
-    return render_template('client/dashboard.html', data_db=data_db )
+############## Services HTML ##############
 
-@app.route('/client/updatedata/')
-@clinet_declined
-@identify_required
-def client_update_data():
-    return render_template('client/update.html')
+@app.route('/user/admin/serviceupdate/<id>')
+def service_update_data(id):
+    return render_template('service/service_update.html', id=id)
 
-@app.route('/client/decline/dashboard/')
-@identify_required
-def client_dashboard_decline():
-    if Client().check_if_decline():
-        return redirect('/client/dashboard')
-    return render_template('client/dashboard_decline.html')
+############## Roles HTML ##############
+
+@app.route('/user/admin/rolesupdate/<id>')
+def roles_update_data(id):
+    return render_template('role/update_role.html', id=id)

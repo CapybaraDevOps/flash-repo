@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="card-wrapper">
+
+        <div class="card">
+
+            <h1 class="center blackfont">Type information</h1>
+
+            <form name="update_form" method="POST" action="/user/admin/service_update/{{ id }}">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br>
+                <label for="serviceaddress">Address:</label>
+                <input type="url" id="serviceaddress" name="serviceaddress" placeholder="https://capybara.pp.ua" 
+                pattern="https://.*" size="30" required /><br>
+                <label for="permission">Permission:</label>
+                <select name="permission" id="permission">
+                    <option value="prod" selected>prod</option>
+                    <option value="dev">dev</option>
+                    <option value="stage">stage</option>
+                </select>
+                <label for="enabled">Enabled:</label>
+                <input type="checkbox" id="enabled" name="enabled"><br>
+                
+                <div class="center">
+                    <input type="submit" value="Submit" class="btn">
+                    <a href="/user/dashboard/admin" class="btn btn--secondary">Dashboard</a>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="card-wrapper">
+
+        <div class="card">
+
+            <h1 class="center blackfont">Type information</h1>
+
+            <form action="/user/admin/role_update/{{ id }}" method="POST" name="update_form">
+    
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required><br>
+                <label for="permissions">Permissions:</label>
+                <div id="permissions">
+                    <label>
+                        <input type="checkbox" name="permission" value="prod" checked> prod
+                    </label>
+                    <label>
+                        <input type="checkbox" name="permission" value="dev"> dev
+                    </label>
+                    <label>
+                        <input type="checkbox" name="permission" value="stage"> stage
+                    </label>
+                </div>
+                <input type="hidden" name="permissions_list" id="permissions_list">
+                <div class="center">
+                    <input type="submit" value="Submit" class="btn">
+                    <a href="/user/dashboard/admin" class="btn btn--secondary">Dashboard</a>
+                </div>
+            </form>
+            
+        </div>
+    </div>
+{% endblock %}

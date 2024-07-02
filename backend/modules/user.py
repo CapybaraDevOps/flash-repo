@@ -1,8 +1,7 @@
 from flask import Flask, jsonify, request, session, redirect
 from passlib.hash import pbkdf2_sha256
 from web import users as db_users
-from web import services as db_services
-from web import clients as db_client
+from web import role as db_role
 from web import redis_client
 import uuid
 
@@ -25,7 +24,7 @@ class User:
             "email": request.form.get('email'),
             "password": request.form.get('password'),
             "administrator": False,
-            "roles": [ {"name": "default", "permissions": { "gogs_prod", "geo_prod" } }]
+            "roles": [ {"name": "default", "permissions": [ "prod" ] }]
         }
         # Encrypt the password
         user['password'] = pbkdf2_sha256.encrypt(user['password'])
@@ -77,7 +76,8 @@ class UserAdmin(User):
             "name": name,
             "email": email,
             "password": password,
-            "administrator": True  # Set administrator to True for UserAdmin
+            "administrator": True, # Set administrator to True for UserAdmin
+            "roles": [ {"name": "admin", "permissions": [ "prod", "dev", "stage" ] }]  
         }
 
         # Encrypt the password
@@ -93,24 +93,27 @@ class UserAdmin(User):
             db_users.insert_one(user)
 
     def fetch_data(self):
-        return list(db_client.find())
+        return list(db_users.find())
     
-    def update_roles(self, id, rolename, permissions):
+    def update_roles(self, id):
         if session['user']['administrator'] == True:
-            db_client.update_one(
+            rolename = request.form.get('rolename')
+            role = db_role.find_one({'name': rolename})
+
+            db_users.update_one(
                 {'_id': id},
-                {'$set': {'roles.name': rolename}},
-                {'$set': {'roles.permissions': permissions}}
+                {'$set': {'roles.0.name': rolename, 'roles.0.permissions': role['permission']}}
             )
-            return redirect('/user/dashboard/admin/')
+            return jsonify({"succes": "Roles update worked"}), 200
+        return jsonify({ "error": "Roles update failed"}), 400
 
     def delete_record(self, id):
-        db_client.delete_one({'_id': id})
+        db_users.delete_one({'_id': id})
         return redirect('/user/dashboard/admin/')
     
     def delete_record_all(self):
         if session['user']['administrator'] == True:
-            db_client.delete_many({})
+            db_users.delete_many({})
             return redirect('/user/dashboard/admin/')
         else:
             return jsonify({ "error": "Admin permission required"}), 401
