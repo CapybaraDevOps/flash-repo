@@ -5,7 +5,7 @@ from botocore.exceptions import ClientError
 def get_secret():
 
     secret_name = "env"
-    region_name = "us-east-1"
+    region_name = "us-west-2"
 
     # Create a Secrets Manager client
     session = boto3.session.Session()
@@ -32,7 +32,7 @@ def get_secret():
 def get_env_mongo():
 
     secret_name = "env_mongo"
-    region_name = "us-east-1"
+    region_name = "us-west-2"
 
     # Create a Secrets Manager client
     session = boto3.session.Session()
