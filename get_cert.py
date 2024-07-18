@@ -10,7 +10,7 @@ from botocore.exceptions import ClientError
 def get_privkey():
 
     secret_name = "prod/flaskapp"
-    region_name = "us-east-1"
+    region_name = "us-west-2"
 
     # Create a Secrets Manager client
     session = boto3.session.Session()
@@ -38,7 +38,7 @@ def get_privkey():
 def get_fullchain():
 
     secret_name = "prod/flaskapp2"
-    region_name = "us-east-1"
+    region_name = "us-west-2"
 
     # Create a Secrets Manager client
     session = boto3.session.Session()
